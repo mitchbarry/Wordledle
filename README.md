@@ -5,7 +5,7 @@ Introducing **Wordledle**! Our app is designed to help players refine their gues
 ## Links
 
 - Play: [Website](...) (Not Live Yet)
-- Source: [GitHub](TBD)
+- Source: [GitHub](https://github.com/mitchbarry/Wordledle)
 
 ## Features
 
