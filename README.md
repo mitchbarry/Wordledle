@@ -62,8 +62,6 @@ For Expo users, familiarize yourself with the Expo Documentation for smooth deve
 
 This project is licensed under the [MIT License](LICENSE.md).
 
----
-
 For any inquiries or support, feel free to contact us at the provided email addresses.
 
 We’re excited to help you master Wordle with Wordledle!
