@@ -1,14 +1,9 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { FC } from 'react';
+import { Stack } from "expo-router";
 
-const _layout: FC = () => {
+export default function RootLayout() {
   return (
-    <View>
-      <Text>_layout</Text>
-    </View>
+    <Stack>
+      <Stack.Screen name="index" />
+    </Stack>
   );
 }
-
-export default _layout;
-
-const styles = StyleSheet.create({});
