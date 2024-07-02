@@ -17,10 +17,10 @@ Introducing **Wordledle**! Our app is designed to help players refine their gues
 ## Contact Information
 
 Authors:
-- Kyle Talley [LinkedIn](https://www.linkedin.com/in/kyledtalley/) | [GitHub](https://github.com/kyledtalley) | kyletalley@me.com
+- Kyle Talley [LinkedIn](https://www.linkedin.com/in/kyledtalley/) | [GitHub](https://github.com/kyledtalley) | 
 - Mitch Barry [LinkedIn](https://www.linkedin.com/in/mitch-barry/) | [GitHub](https://github.com/mitchbarry) | mitchbarry5564@gmail.com
 
-Email: kyletalley@me.com | mitchbarry
+Email: kyle.talley@example.com | mitchbarry
 
 ## Contributing
 
