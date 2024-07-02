@@ -114,7 +114,7 @@ const Index = () => {
             tw`w-8 h-8 border-2 mx-1 justify-center items-center`,
             { borderColor: "gray", backgroundColor: box.color }
           ]}>
-            <Text style={tw`text-lg text-white`}>{box.letter.toUpperCase()}</Text>
+            <Text style={tw`text-lg text-black`}>{box.letter.toUpperCase()}</Text>
           </View>
         </TouchableWithoutFeedback>
       ))}
