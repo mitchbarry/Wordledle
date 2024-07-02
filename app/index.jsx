@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, FlatList, TouchableWithoutFeedback } from "react-native";
 import tw from "twrnc";
-import dictionary from '../constants/dictionary'; // Import the dictionary
+import dictionary from '../constants/dictionary';
 
 const WORD_LENGTH = 5;
 const MAX_TRIES = 6;
@@ -22,7 +22,7 @@ const Index = () => {
   };
 
   const handleInputChange = (text) => {
-    setCurrentInput(text);
+    setCurrentInput(text.toLowerCase());
   };
 
   const handleInputSubmit = () => {
@@ -38,46 +38,52 @@ const Index = () => {
   };
 
   const generateHints = () => {
-    console.log("Generating hints based on guesses:", guesses);
-
-    const requiredLetters = new Set();
+    const requiredLetters = {};
     const mustExclude = new Set();
     const positionConstraints = Array(WORD_LENGTH).fill(null);
+
+    let allColored = true;
 
     for (const row of guesses) {
       for (let j = 0; j < WORD_LENGTH; j++) {
         const { letter, color } = row[j];
-        if (letter === "") continue; // Skip empty guesses
+        if (letter === "") continue; // skip the empty boxes if they are empty for some reason
+        if (color === "gray") {
+          allColored = false;
+          break;
+        }
         if (color === "green") {
-          positionConstraints[j] = letter;
-          requiredLetters.add(letter);
+          positionConstraints[j] = letter.toLowerCase();
+          requiredLetters[letter.toLowerCase()] = (requiredLetters[letter.toLowerCase()] || 0) + 1;
         } else if (color === "yellow") {
-          requiredLetters.add(letter);
+          requiredLetters[letter.toLowerCase()] = (requiredLetters[letter.toLowerCase()] || 0) + 1;
         } else if (color === "red") {
-          mustExclude.add(letter);
+          mustExclude.add(letter.toLowerCase());
         }
       }
+      if (!allColored) break;
     }
 
-    console.log("Required Letters:", [...requiredLetters]);
-    console.log("Must Exclude:", [...mustExclude]);
-    console.log("Position Constraints:", positionConstraints);
+    if (!allColored) {
+      alert("Please ensure all letters have a color other than gray.");
+      return;
+    }
 
     const filteredHints = dictionary.filter(word => {
       let isPossible = true;
 
+      // check for excluded letters (reds)
       for (const letter of mustExclude) {
         if (word.includes(letter)) {
-          // console.log(`Fail (red): ${word} should not include ${letter}`);
           isPossible = false;
           break;
         }
       }
 
       if (isPossible) {
+        // check for position constraints (greens)
         for (let j = 0; j < WORD_LENGTH; j++) {
           if (positionConstraints[j] && word[j] !== positionConstraints[j]) {
-            // console.log(`Fail (green): ${word} has ${word[j]} at ${j}, expected ${positionConstraints[j]}`);
             isPossible = false;
             break;
           }
@@ -85,11 +91,11 @@ const Index = () => {
       }
 
       if (isPossible) {
-        for (const letter of requiredLetters) {
-          if (!word.includes(letter)) {
-            console.log(`Fail (yellow/green): ${word} should include ${letter}`);
+        // check for required letters (yellow/greens)
+        for (const letter in requiredLetters) {
+          if ((word.match(new RegExp(letter, "g")) || []).length < requiredLetters[letter]) {
             isPossible = false;
-
+            break;
           }
         }
       }
@@ -97,7 +103,6 @@ const Index = () => {
       return isPossible;
     });
 
-    console.log("Filtered Hints: ", filteredHints);
     setHints(filteredHints);
   };
 
@@ -109,7 +114,7 @@ const Index = () => {
             tw`w-8 h-8 border-2 mx-1 justify-center items-center`,
             { borderColor: "gray", backgroundColor: box.color }
           ]}>
-            <Text style={tw`text-lg text-white`}>{box.letter}</Text>
+            <Text style={tw`text-lg text-white`}>{box.letter.toUpperCase()}</Text>
           </View>
         </TouchableWithoutFeedback>
       ))}
@@ -129,7 +134,7 @@ const Index = () => {
         style={tw`h-10 border border-gray-400 px-3 mb-5 w-4/5 text-white`}
         placeholder="Enter your guess"
         placeholderTextColor="gray"
-        value={currentInput}
+        value={currentInput.toUpperCase()}
         onChangeText={handleInputChange}
         maxLength={WORD_LENGTH}
       />
@@ -149,7 +154,7 @@ const Index = () => {
         <View style={tw`bg-white p-5 rounded w-full max-w-md`}>
           <Text style={tw`text-lg font-bold mb-3`}>Possible Words:</Text>
           {hints.map((hint, index) => (
-            <Text key={index} style={tw`text-lg`}>{hint}</Text>
+            <Text key={index} style={tw`text-lg`}>{hint.toUpperCase()}</Text>
           ))}
         </View>
       )}
